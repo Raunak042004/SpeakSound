@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Speak & Shop</title>
+  <style>
+    body {
+      font-family: monospace;
+      font-size: 20px; /* Updated font size */
+      margin: 0;
+      padding: 0;
+      background-image: url('ab.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: #4a4a4a;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #4a90e2;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 60px;
+      color: white;
+    }
+    .branding {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 50px auto;
+      padding: 40px;
+      background: rgba(198, 235, 250, 0.9);
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      flex: 1;
+    }
+
+    h1 {
+      font-size: 32px;
+      color: #4a90e2;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .mic-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 25px 0;
+    }
+
+    .mic-button {
+      background: #e0e0e0;
+      border: none;
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .mic-button:hover {
+      background: #d0d0d0;
+    }
+
+    input {
+      padding: 12px;
+      border: 1px solid #c5cae9;
+      border-radius: 5px;
+      background: #f8f8f8;
+      width: 96%;
+      margin: 15px 0;
+      font-size: 20px;
+    }
+
+    .analysis-box {
+      padding: 12px;
+      border: 1px solid #c5cae9;
+      border-radius: 5px;
+      background: #f8f8f8;
+      margin-top: 10px;
+      color: #4d4d4d;
+      font-size: 20px;
+    }
+
+    button {
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      width: 100%;
+      background: #4a90e2;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #357ab8;
+    }
+
+    footer {
+      background-color: #4a90e2;
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="branding">🛒 Speak & Shop</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="ourteam.html">Our Team</a>
+      <a href="faq.html">FAQ</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>Welcome to Speak & Shop</h1>
+    <div class="mic-wrapper">
+      <div class="mic-button" onclick="startListening()">
+        <img src="unnamed.png" alt="Microphone" width="45" />
+      </div>
+    </div>
+    <input type="text" id="searchInput" placeholder="Voice Input" readonly>
+    <div class="analysis-box" id="analysisBox">Waiting for command...</div>
+    <button onclick="triggerSearch()">🔍 Search</button>
+
+    <!-- Google Custom Search Widget -->
+    <div class="gcse-search"></div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Speak & Shop. Created by Mayank, Akshit Gauttam & Ishanth.</p>
+
+  </footer>
+
+  <!-- Google Programmable Search Engine JS -->
+  <script async src="https://cse.google.com/cse.js?cx=233d8e16eadf448ff"></script>
+
+  <!-- Voice recognition script -->
+  <script>
+    function startListening() {
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = 'en-IN';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById('searchInput').value = transcript;
+        document.getElementById('analysisBox').textContent = "Analysis...";
+        triggerSearch();
+      };
+
+      recognition.onerror = function(event) {
+        alert("Speech recognition error: " + event.error);
+      };
+
+      recognition.start();
+    }
+
+    function triggerSearch() {
+      const query = document.getElementById('searchInput').value;
+      if (!query.trim()) {
+        alert("Please enter or speak a search query.");
+        return;
+      }
+
+      const inputBox = document.querySelector("input.gsc-input");
+      const searchButton = document.querySelector("button.gsc-search-button");
+
+      if (inputBox && searchButton) {
+        inputBox.value = query;
+        searchButton.click();
+      } else {
+        alert("Search widget not loaded yet. Please wait a moment.");
+      }
+    }
+  </script>
+
+</body>
+</html>
